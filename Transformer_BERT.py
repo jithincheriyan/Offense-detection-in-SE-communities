@@ -33,17 +33,8 @@ metric = tf.keras.metrics.BinaryAccuracy('accuracy')
 
 
 def data_encode():
-    # text = "Sorry i didn t get u post can explain clearly"
-    # print(len(text))
-    # tokens = bert_tokenizer.tokenize(text)
-    # token_ids = bert_tokenizer.encode(text, add_special_tokens=True, max_length=250, padding=True)
-    # print(tokens)
-    # print(token_ids)
-
     df = pd.read_csv("H:\\Training Data\\BERT_Training_Data_Augmented_V3.csv", encoding = "ISO-8859-1").sample(frac=1)
     sentences=df.Comment_Text.tolist()
-    # print(max(sentences, key=len))
-
     bert_inp=bert_tokenizer.batch_encode_plus(sentences,
                                             add_special_tokens = config.add_special_tokens,
                                             max_length =config.max_length,
@@ -78,21 +69,17 @@ def train(input_ids,attention_masks,labels):
                    # steps_per_epoch=config.steps_per_epoch
                    # callbacks=[callbacks,model_checkpoint]
                    )
-    print("training over")
-    #bert_model.save(model_save_path)
+    print("training over")    
     bert_model.save_weights('H:\\Transformer_DistilBERT_Model.h5')
     print("model saved")
 
-
 def test():
-    out_df = pd.DataFrame()
-    # path="H:\\Testing Data\\Nov_CSV_Merged_Preprocessed"
+    out_df = pd.DataFrame()    
     path="H:\\Test"
     test_df=pd.read_csv(path+".csv", encoding = "ISO-8859-1")
     Comment_Text=test_df.Comment_Text.tolist()
 
-    trained_model = TFBertForSequenceClassification.from_pretrained(config.bert_model,num_labels=config.num_labels)
-    # trained_model.load_weights('C:\\StackOverflow_Work\\ML models\\Transformer best model\\Transformer_BERT_Model.h5')
+    trained_model = TFBertForSequenceClassification.from_pretrained(config.bert_model,num_labels=config.num_labels)    
     trained_model.load_weights("H:\\Transformer_BERT_Large_Model.h5")
     trained_model.compile(loss=loss,
                           optimizer=optimizer,
