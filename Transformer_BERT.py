@@ -107,47 +107,26 @@ def test():
     val_inp=np.asarray(test_input['input_ids'])
     val_mask=np.asarray(test_input['attention_mask'])
 
-    # prediction = np.array(trained_model.predict([val_inp, val_mask], batch_size=16)).squeeze(axis=0)
     prediction = trained_model.predict([val_inp, val_mask], batch_size=config.batch_size)
     # print(type(prediction))
     print(np.shape(prediction))
     print(prediction)
 
-    pred_prob = tf.nn.softmax(prediction).numpy()
-    # pred_prob=torch.sigmoid(prediction).numpy()
+    #pred_prob = tf.nn.softmax(prediction).numpy()
+    pred_prob=torch.sigmoid(prediction).numpy()
     print(pred_prob)
     print(np.shape(pred_prob))
     pred_labels=pred_prob[0].argmax(axis=1)
 
     # pred_prob=tf.nn.sigmoid(prediction).numpy()         # for single label prediction , where 0.5 is the threshold
     # pred_labels = [0 if pred <= 0.5 else 1 for pred in pred_prob]
-
-    print(pred_prob)
-
-    
-    '''
-    prediction = trained_model.predict([val_inp, val_mask], batch_size=16)
-    print(type(prediction))
-    print(np.shape(prediction))
-    print(prediction)
-    print(max(prediction), min(prediction))
-
-    # print(prediction)
-    pred_proba = tf.nn.softmax(prediction).numpy()
-    pred_labels = pred_proba[1].argmax(axis=1)
-    print(pred_labels)
-    # pred_labels=[0 if pred < 0.75 else 1 for pred in prediction]         # use argmax to get the CLASS with the maximum probability
-    # prediction[prediction>0.75]=1
-    # prediction[prediction<= 0.75] = 0
-
-'''
     out_df["Comment_Text"] = pd.Series(Comment_Text)
     out_df["Bert_Label"] =pd.Series(pred_labels)
     print(out_df)
     out_df.to_csv(path + "_BERT_Prediction.csv", index=False)
 
 if __name__ == '__main__':
-    # input_ids, attention_masks, labels=data_encode()
-    # train(input_ids, attention_masks, labels)
+    input_ids, attention_masks, labels=data_encode()
+    train(input_ids, attention_masks, labels)
     test()
 
