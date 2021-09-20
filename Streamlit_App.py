@@ -36,5 +36,5 @@ def L1_test(comment):
 
 if __name__ == '__main__':
     st.title('Abuse detector')
-    comment=st.text_imput("Input the comment")
+    comment=st.text_input("Enter the comment here : ")
     st.text(L1_test([comment]))
