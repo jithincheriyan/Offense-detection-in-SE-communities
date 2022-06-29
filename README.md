@@ -1,1 +1,2 @@
-# Offense-detection-in-SE-communities
+# Detecting and Reducing Politeness Norm Violations in Online Software En-
+gineering Communities
